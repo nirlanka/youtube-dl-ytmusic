@@ -13,16 +13,10 @@ if should_read_cookies == "y":
   file.write(xerox.paste())
   file.close()
 
-opt = {
-  "cookies": "cookies.txt",
-  "format": "bestaudio/best",
-  "extract-audio": True,
-  "audio-quality": 0,
-  "audio-format": "mp3",
-}
-
 urls = []
 url_inp = input("YouTube Music song URL: ")
+is_music = ('music.' in url_inp)
+
 url_inp = url_inp.replace("music.", "www.")
 url_inp = url_inp.split("&")[0]
 url_inp = url_inp.strip()
@@ -33,6 +27,14 @@ Downloading URLS (modified):
 {}
 """.format(urls))
 
+opt = {}
+opt["cookies"] = "cookies.txt"
+opt["format"] = "bestaudio/best"
+if is_music:
+    opt["extract-audio"] = True
+    opt["audio-quality"] = 0
+    opt["audio-format"] = "mp3"
+
 cmd_str = "yt-dlp"
 
 def is_num(x):
@@ -42,7 +44,7 @@ for key in opt:
     v = opt[key]
     if is_num(v):
         v = str(v)
-    txt = v if (v == True) else (' \"' + str(v) + "\"") 
+    txt = v if (v == True or v == False) else (' \"' + str(v) + "\"") 
     txt = str(txt)
     cmd_str += (' --' + key + txt)
 
