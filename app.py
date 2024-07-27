@@ -15,7 +15,7 @@ if should_read_cookies == "y":
 
 urls = []
 url_inp = input("YouTube Music song URL: ")
-is_music = ('music.' in url_inp)
+is_music = 'music.' in url_inp
 
 url_inp = url_inp.replace("music.", "www.")
 url_inp = url_inp.split("&")[0]
@@ -44,7 +44,7 @@ for key in opt:
     v = opt[key]
     if is_num(v):
         v = str(v)
-    txt = v if (v == True or v == False) else (' \"' + str(v) + "\"") 
+    txt = v if isinstance(v, (bool)) else (' \"' + str(v) + "\"") 
     txt = str(txt)
     cmd_str += (' --' + key + txt)
 
@@ -57,5 +57,5 @@ print("""
     ```
 """.format(cmd_str))
 
-with yt.YoutubeDL(opt) as ytdl:
-    ytdl.download(urls)
+with yt.YoutubeDL(opt) as _:
+    _.download(urls)
