@@ -1,0 +1,7 @@
+.DS_Store
+
+__pycache__/*
+.venv/*
+downloads/*
+Session.vim
+cookies.txt
