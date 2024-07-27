@@ -3,7 +3,8 @@ import yt_dlp as yt
 
 print("""NOTE:
   Copy the cookies in youtube.com or music.youtube.com in Netscape format.
-    (Use Cookie-Editor /free/ - https://cookie-editor.com)""")
+    (Use Cookie-Editor /free/ - https://cookie-editor.com)
+""")
 
 should_read_cookies = input("Read cookies from clipboard? (y/n): ")
 
@@ -26,13 +27,12 @@ url_inp = url_inp.replace("music.", "www.")
 url_inp = url_inp.split("&")[0]
 url_inp = url_inp.strip()
 urls = [url_inp]
-print()
-print("Downloading URLS (modified):")
-print(urls)
 
-print()
-print("Shell equivalent:")
-print("```")
+print("""
+Downloading URLS (modified):
+{}
+""".format(urls))
+
 cmd_str = "yt-dlp"
 
 def is_num(x):
@@ -45,11 +45,15 @@ for key in opt:
     txt = v if (v == True) else (' \"' + str(v) + "\"") 
     txt = str(txt)
     cmd_str += (' --' + key + txt)
-cmd_str += (" \"" + urls[0] + "\"")
-print(cmd_str)
 
-print("```")
-print()
+cmd_str += (" \"" + urls[0] + "\"")
+
+print("""
+    Shell equivalent:
+    ```
+    {}
+    ```
+""".format(cmd_str))
 
 with yt.YoutubeDL(opt) as ytdl:
     ytdl.download(urls)
