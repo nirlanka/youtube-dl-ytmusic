@@ -5,9 +5,10 @@ name = "pypi"
 
 [packages]
 xerox = "*"
-youtube-dl = "*"
+yt-dlp = {extras = ["default"], version = "*"}
 
 [dev-packages]
+yt-dlp = "*"
 
 [requires]
 python_version = "3.12"

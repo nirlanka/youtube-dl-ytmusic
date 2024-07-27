@@ -1,13 +1,5 @@
-#!/opt/homebrew/bin/python3
-
-from __future__ import unicode_literals # for youtube_dl
-
 import xerox
-import subprocess
-
-import youtube_dl
-
-import credentials
+import yt_dlp as yt
 
 print("""NOTE:
   Copy the cookies in youtube.com or music.youtube.com in Netscape format.
@@ -22,18 +14,17 @@ if should_read_cookies == "y":
 
 opt = {
   "cookies": "cookies.txt",
-  #"username": credentials.username,
-  #"password": credentials.password,
   "format": "bestaudio/best",
   "extract-audio": True,
-#  "audio-format": "mp3",
   "audio-quality": 0,
+  "audio-format": "mp3",
 }
 
 urls = []
 url_inp = input("YouTube Music song URL: ")
 url_inp = url_inp.replace("music.", "www.")
-url_inp = url_inp.split("$")[0]
+url_inp = url_inp.split("&")[0]
+url_inp = url_inp.strip()
 urls = [url_inp]
 print()
 print("Downloading URLS (modified):")
@@ -42,17 +33,23 @@ print(urls)
 print()
 print("Shell equivalent:")
 print("```")
-print("youtube-dl" \
-        + " --cookies cookies.txt" \
-        #+ " --username " + opt["username"] \
-        #+ " --password \"" + opt["password"] + "\""\
-        + " --format " + opt["format"] \
-        + " --extract-audio"  \
-        + " --audio-quality " + str(opt["audio-quality"]) \
-        + " " + urls[0] \
-      )
+cmd_str = "yt-dlp"
+
+def is_num(x):
+    return isinstance(x, (int, float, complex)) and not isinstance(x, bool)
+
+for key in opt:
+    v = opt[key]
+    if is_num(v):
+        v = str(v)
+    txt = v if (v == True) else (' \"' + str(v) + "\"") 
+    txt = str(txt)
+    cmd_str += (' --' + key + txt)
+cmd_str += (" \"" + urls[0] + "\"")
+print(cmd_str)
+
 print("```")
 print()
 
-with youtube_dl.YoutubeDL(opt) as ydl:
-    ydl.download(urls)
+with yt.YoutubeDL(opt) as ytdl:
+    ytdl.download(urls)
